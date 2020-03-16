@@ -19,7 +19,7 @@ clock = pygame.time.Clock()
 class player(object):
     run = [pygame.image.load(os.path.join('assets\images', str(x) + '.png')) for x in range(8,16)]
     jump = [pygame.image.load(os.path.join('assets\images', str(x) + '.png')) for x in range(1,8)]
-    slide = [pygame.image.load(os.path.join('assets\images', 'S1.png')),pygame.image.load(os.path.join('assets\images', 'S2.png')),pygame.image.load(os.path.join('assets\images', 'S2.png')),pygame.image.load(os.path.join('assets\images', 'S2.png')), pygame.image.load(os.path.join('assets\images', 'S2.png')),pygame.image.load(os.path.join('assets\images', 'S2.png')), pygame.image.load(os.path.join('assets\images', 'S2.png')), pygame.image.load(os.path.join('asstes/images', 'S2.png')), pygame.image.load(os.path.join('asstes/images', 'S3.png')), pygame.image.load(os.path.join('asstes/images', 'S4.png')), pygame.image.load(os.path.join('asstes/images', 'S5.png'))]
+    slide = [pygame.image.load(os.path.join('assets\images', 'S1.png')),pygame.image.load(os.path.join('assets\images', 'S2.png')),pygame.image.load(os.path.join('assets\images', 'S2.png')),pygame.image.load(os.path.join('assets\images', 'S2.png')), pygame.image.load(os.path.join('assets\images', 'S2.png')),pygame.image.load(os.path.join('assets\images', 'S2.png')), pygame.image.load(os.path.join('assets\images', 'S2.png')), pygame.image.load(os.path.join('assets\images', 'S2.png')), pygame.image.load(os.path.join('assets\images', 'S3.png')), pygame.image.load(os.path.join('assets\images', 'S4.png')), pygame.image.load(os.path.join('assets\images', 'S5.png'))]
     jumpList = [1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,-1,-1,-1,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4]
     def __init__(self, x, y, width, height):
         self.x = x
@@ -66,11 +66,15 @@ class player(object):
 def redrawWindow():
     win.blit(bg, (bgX,0))
     win.blit(bg, (bgX2,0))
+    runner.draw(win)
     pygame.display.update()
 
+runner = player(200, 313, 64, 64)
+pygame.time.set_timer(USEREVENT + 1, 500)
 speed = 30
 run = True
 while run:
+    redrawWindow()
     clock.tick(speed)
     bgX -= 1.4
     bgX2 -= 1.4
@@ -84,3 +88,19 @@ while run:
             run = False
             pygame.quit()
             quit()
+        if event.type == USEREVENT + 1:
+            speed += 1
+    
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_SPACE] or keys[pygame.K_UP]:
+        if not(runner.jumping):
+            runner.jumping = True
+    
+    if keys[pygame.K_DOWN]:
+        if not(runner.sliding):
+            runner.sliding = True
+            
+
+
+    clock.tick(speed)
