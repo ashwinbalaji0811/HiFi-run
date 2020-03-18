@@ -62,6 +62,26 @@ class player(object):
             win.blit(self.run[self.runCount//6], (self.x,self.y))
             self.runCount += 1
 
+class saw(object):
+    img = [pygame.image.load(os.path.join('assets\images', 'SAW0')), pygame.image.load(os.path.join('assets\images', 'SAW1')), pygame.image.load(os.path.join('assets\images', 'SAW2')), pygame.image.load(os.path.join('assets\images', 'SAW3'))]
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.hitbox = (x, y, width, height)
+        self.count = 0
+    
+    def draw(self, win):
+        self.hitbox = ()
+        if self.count >= 8:
+            self.count = 0
+        win.blit(self.img[self.count//2], (self.x, self.y))
+        self.count += 1
+        pygame.draw.rect(win, (255, 0, 0), self.hitbox, 2)
+
+
+
 
 def redrawWindow():
     win.blit(bg, (bgX,0))
