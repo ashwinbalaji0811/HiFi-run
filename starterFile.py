@@ -3,6 +3,7 @@ from pygame.locals import *
 import os
 import sys
 import math
+import random
 
 pygame.init()
 
@@ -76,7 +77,7 @@ class saw(object):
         self.hitbox = (self.x + 5, self.y + 5, self.width - 10, self.height)
         if self.count >= 8:
             self.count = 0
-        win.blit(self.img[self.count//2], (self.x, self.y))
+        win.blit(pygame.transform.scale(self.img[self.count//2], (64, 64)), (self.x, self.y))
         self.count += 1
         pygame.draw.rect(win, (255, 0, 0), self.hitbox, 2)
 
@@ -92,19 +93,26 @@ def redrawWindow():
     win.blit(bg, (bgX,0))
     win.blit(bg, (bgX2,0))
     runner.draw(win)
-    spikee.draw(win)
-    saww.draw(win)
+    for objectt in objects:
+        objectt.draw(win)
     pygame.display.update()
 
 runner = player(200, 313, 64, 64)
 pygame.time.set_timer(USEREVENT + 1, 500)
+pygame.time.set_timer(USEREVENT + 2, random.randrange(3000, 5000))
 speed = 60
-spikee = spike(300, 0, 48, 320)
-saww = saw(300, 300, 64, 64)
+
+objects = []
+
 run = True
 while run:
     redrawWindow()
     clock.tick(speed)
+
+    for objectt in objects:
+        objectt.x -= 1.4
+        if objectt.x < objectt.width * -1:
+            objects.pop(objects.index(objectt))
     bgX -= 1.4
     bgX2 -= 1.4
     if bgX < bg.get_width() * -1:
@@ -119,6 +127,14 @@ while run:
             quit()
         if event.type == USEREVENT + 1:
             speed += 1
+        if event.type == USEREVENT + 2:
+            r = random.randrange(0, 2)
+            if r == 0:
+                objects.append(saw(810, 310, 64, 64))
+            else:
+                objects.append(spike(810, 0, 48, 320))
+
+            
     
     keys = pygame.key.get_pressed()
 
