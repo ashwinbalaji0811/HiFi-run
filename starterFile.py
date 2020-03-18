@@ -63,7 +63,7 @@ class player(object):
             self.runCount += 1
 
 class saw(object):
-    img = [pygame.image.load(os.path.join('assets\images', 'SAW0')), pygame.image.load(os.path.join('assets\images', 'SAW1')), pygame.image.load(os.path.join('assets\images', 'SAW2')), pygame.image.load(os.path.join('assets\images', 'SAW3'))]
+    img = [pygame.image.load(os.path.join('assets\images', 'SAW0.png')), pygame.image.load(os.path.join('assets\images', 'SAW1.png')), pygame.image.load(os.path.join('assets\images', 'SAW2.png')), pygame.image.load(os.path.join('assets\images', 'SAW3.png'))]
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
@@ -73,25 +73,34 @@ class saw(object):
         self.count = 0
     
     def draw(self, win):
-        self.hitbox = ()
+        self.hitbox = (self.x + 5, self.y + 5, self.width - 10, self.height)
         if self.count >= 8:
             self.count = 0
         win.blit(self.img[self.count//2], (self.x, self.y))
         self.count += 1
         pygame.draw.rect(win, (255, 0, 0), self.hitbox, 2)
 
-
+class spike(saw):
+    img = pygame.image.load(os.path.join('assets\images', 'spike.png'))
+    def draw(self, win):
+        self.hitbox = (self.x + 10, self.y, 28, 315)
+        win.blit(self.img, (self.x, self.y))
+        pygame.draw.rect(win, (255, 0, 0), self.hitbox, 2)
 
 
 def redrawWindow():
     win.blit(bg, (bgX,0))
     win.blit(bg, (bgX2,0))
     runner.draw(win)
+    spikee.draw(win)
+    saww.draw(win)
     pygame.display.update()
 
 runner = player(200, 313, 64, 64)
 pygame.time.set_timer(USEREVENT + 1, 500)
-speed = 30
+speed = 60
+spikee = spike(300, 0, 48, 320)
+saww = saw(300, 300, 64, 64)
 run = True
 while run:
     redrawWindow()
